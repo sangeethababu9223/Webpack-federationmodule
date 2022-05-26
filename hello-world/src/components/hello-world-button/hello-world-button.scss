@@ -1,0 +1,14 @@
+$maincolor : green; 
+$fontSize : 20px; 
+
+.hello-world {
+    &-button {
+        font-size: $fontSize;
+        padding: 10px;
+        background: $maincolor;
+        color:white;
+    }
+    &-text {
+        background-color: $maincolor;
+    }
+}
