@@ -1,24 +1,22 @@
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { ModuleFederationPlugin } = require('webpack').container;
 
+
 module.exports = {
-    entry: './src/kiwi.js',
+    entry:'./src/dashboard.js',
     output: {
-        filename: 'bundle.js',
+        filename: 'bundle.[contenthash].js',
         path: path.resolve(__dirname,'./dist'),
-        publicPath: 'http://localhost:9002/'
+        publicPath: 'http://localhost:9000/'
     },
-    mode: 'development',
-    devServer: {
-        port: 9002,
-        static: {
-            directory: path.resolve(__dirname,'./dist'),
-        },
-        devMiddleware: {
-            index: 'kiwi.html',
-            writeToDisk: true
+    mode: 'production',
+    optimization: {
+        splitChunks: {
+            chunks: 'all',
+            minSize: 3000
         }
     },
     module: {
@@ -39,13 +37,7 @@ module.exports = {
             {   
                 test: /\.css$/,
                 use: [
-                    'style-loader', 'css-loader' 
-                ]
-            },
-            {   
-                test: /\.scss$/,
-                use: [
-                    'style-loader', 'css-loader', 'sass-loader'
+                    MiniCssExtractPlugin.loader, 'css-loader' 
                 ]
             },
             {   
@@ -57,6 +49,9 @@ module.exports = {
         ]
     },
     plugins: [
+        new MiniCssExtractPlugin({
+            filename: '[name].[contenthash].css'
+        }),
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: [
                 '**/*', // will sjow by default. don't need to add this 
@@ -64,21 +59,16 @@ module.exports = {
             ]
         }),
         new HtmlWebpackPlugin({
-            filename: 'kiwi.html',
-            title : 'Kiwi',
-            template: 'src/page-template.hbs',
-            description: 'Kiwi',
-            minify: false
+            filename: 'dashboard.html',
+            title : 'Dashboard',
         }),
         new ModuleFederationPlugin({
-            name: 'KiwiApp',
+            name: 'App',
             filename: 'remoteEntry.js',
-            // remotes: {
-            //     HelloWorldApp: 'HelloWorldApp@http://localhost:9001/remoteEntry.js'
-            // },
-            exposes: {
-                './KiwiPage': './src/components/kiwi-page/kiwi-page.js'
-            }
+            remotes: {
+                HelloWorldApp: 'HelloWorldApp@http://localhost:9001/remoteEntry.js',
+                KiwiApp: 'KiwiApp@http://localhost:9002/remoteEntry.js'
+            },
         })
     ]
 }

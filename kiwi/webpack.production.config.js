@@ -7,9 +7,9 @@ const { ModuleFederationPlugin } = require('webpack').container;
 module.exports = {
     entry: './src/kiwi.js',
     output: {
-        filename: '[name].[contenthash].js',
+        filename: 'bundle.[contenthash].js',
         path: path.resolve(__dirname,'./dist'),
-        publicPath: '/static/'
+        publicPath: 'http://localhost:9002/'
     },
     mode: 'production',
     optimization: {
@@ -49,7 +49,7 @@ module.exports = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: '[name].[contenthash].css'
+            filename: 'main.[contenthash].css'
         }),
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: [
@@ -66,8 +66,9 @@ module.exports = {
         }),
         new ModuleFederationPlugin({
             name: 'KiwiApp',
-            remotes: {
-                HelloWorldApp: 'HelloWorldApp@http://localhost:9001/remoteEntry.js'
+            filename: 'remoteEntry.js',
+            exposes: {
+                './KiwiPage': './src/components/kiwi-page/kiwi-page.js'
             }
         })
     ]

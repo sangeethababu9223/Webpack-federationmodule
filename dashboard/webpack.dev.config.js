@@ -4,49 +4,31 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { ModuleFederationPlugin } = require('webpack').container;
 
 module.exports = {
-    entry: './src/kiwi.js',
+    entry: './src/dashboard.js',
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname,'./dist'),
-        publicPath: 'http://localhost:9002/'
+        publicPath: 'http://localhost:9000/'
     },
     mode: 'development',
     devServer: {
-        port: 9002,
+        port: 9000,
         static: {
             directory: path.resolve(__dirname,'./dist'),
         },
         devMiddleware: {
-            index: 'kiwi.html',
+            index: 'dashboard.html',
             writeToDisk: true
+        },
+        historyApiFallback: {
+            index: 'dashboard.html',
         }
     },
     module: {
         rules: [
             {   
-                test: /\.(png|jpg)$/,
-                type: 'asset',
-                parser: {
-                    dataUrlCondition: {
-                        maxSize: 4 * 1024 // 4kb
-                    }
-                }
-            },
-            {   
                 test: /\.txt/,
                 type: 'asset/source',
-            },
-            {   
-                test: /\.css$/,
-                use: [
-                    'style-loader', 'css-loader' 
-                ]
-            },
-            {   
-                test: /\.scss$/,
-                use: [
-                    'style-loader', 'css-loader', 'sass-loader'
-                ]
             },
             {   
                 test: /\.hbs$/,
@@ -64,21 +46,16 @@ module.exports = {
             ]
         }),
         new HtmlWebpackPlugin({
-            filename: 'kiwi.html',
-            title : 'Kiwi',
-            template: 'src/page-template.hbs',
-            description: 'Kiwi',
-            minify: false
+            filename: 'dashboard.html',
+            title : 'Dashboard',
         }),
         new ModuleFederationPlugin({
-            name: 'KiwiApp',
+            name: 'App',
             filename: 'remoteEntry.js',
-            // remotes: {
-            //     HelloWorldApp: 'HelloWorldApp@http://localhost:9001/remoteEntry.js'
-            // },
-            exposes: {
-                './KiwiPage': './src/components/kiwi-page/kiwi-page.js'
-            }
+            remotes: {
+                HelloWorldApp: 'HelloWorldApp@http://localhost:9001/remoteEntry.js',
+                KiwiApp: 'KiwiApp@http://localhost:9002/remoteEntry.js'
+            },
         })
     ]
 }

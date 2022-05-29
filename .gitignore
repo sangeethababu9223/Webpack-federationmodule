@@ -1,4 +1,6 @@
+/dashboard/node_modules/
 /hello-world/node_modules/
 /kiwi/node_modules/
+/dashboard/dist/
 /hello-world/dist/
 /kiwi/dist/

@@ -6,7 +6,7 @@ const { ModuleFederationPlugin } = require('webpack').container;
 module.exports = {
     entry: './src/hello-world.js',
     output: {
-        filename: '[name].bundle.js',
+        filename: 'bundle.js',
         path: path.resolve(__dirname,'./dist'),
         publicPath: 'http://localhost:9001/'
     },
@@ -59,7 +59,8 @@ module.exports = {
             name: 'HelloWorldApp',
             filename: 'remoteEntry.js',
             exposes: {
-                './HelloWorldButton': './src/components/hello-world-button/hello-world-button.js'
+                './HelloWorldButton': './src/components/hello-world-button/hello-world-button.js',
+                './HelloWorldPage': './src/components/hello-world-page/hello-world-page.js'
             }
         })
     ]

@@ -8,7 +8,7 @@ const { ModuleFederationPlugin } = require('webpack').container;
 module.exports = {
     entry:'./src/hello-world.js',
     output: {
-        filename: '[name].[contenthash].js',
+        filename: 'bundle.[contenthash].js',
         path: path.resolve(__dirname,'./dist'),
         publicPath: 'http://localhost:9001/'
     },
@@ -56,7 +56,7 @@ module.exports = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: '[name].[contenthash].css'
+            filename: 'main.[contenthash].css'
         }),
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: [
@@ -75,7 +75,8 @@ module.exports = {
             name: 'HelloWorldApp',
             filename: 'remoteEntry.js',
             exposes: {
-                './HelloWorldButton': './src/components/hello-world-button/hello-world-button.js'
+                './HelloWorldButton': './src/components/hello-world-button/hello-world-button.js',
+                './HelloWorldPage': './src/components/hello-world-page/hello-world-page.js'
             }
         })
     ]
