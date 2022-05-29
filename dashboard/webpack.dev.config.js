@@ -31,6 +31,12 @@ module.exports = {
                 type: 'asset/source',
             },
             {   
+                test: /\.scss$/,
+                use: [
+                    'style-loader', 'css-loader', 'sass-loader'
+                ]
+            },
+            {   
                 test: /\.hbs$/,
                 use: [
                     'handlebars-loader'

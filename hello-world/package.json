@@ -7,13 +7,17 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.production.config.js",
     "dev": "webpack serve --config webpack.dev.config.js --hot",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "lint": "eslint ."
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/eslint-parser": "^7.18.2",
+    "babel-eslint": "^10.1.0",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.7.1",
+    "eslint": "^8.16.0",
     "handlebars": "^4.7.7",
     "handlebars-loader": "^1.7.2",
     "html-webpack-plugin": "^5.5.0",
